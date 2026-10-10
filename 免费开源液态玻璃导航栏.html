@@ -1,0 +1,116 @@
+<!-- 底部导航栏 -->
+<div class="nav-container" id="navContainer">
+    <div class="nav-slider" id="slider"></div>
+    <button class="nav-item active" data-index="0" aria-label="主页">
+        <svg viewBox="0 0 24 24">
+            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+        </svg>
+    </button>
+    <button class="nav-item" data-index="1" aria-label="下载中心">
+        <svg viewBox="0 0 24 24">
+            <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+        </svg>
+    </button>
+    <button class="nav-item" data-index="2" aria-label="账号">
+        <svg viewBox="0 0 24 24">
+            <circle cx="5" cy="12" r="2.5" />
+            <circle cx="12" cy="12" r="2.5" />
+            <circle cx="19" cy="12" r="2.5" />
+        </svg>
+    </button>
+</div>
+
+<style>
+/* ========== 底部导航样式 ========== */
+.nav-container {
+    position: fixed;
+    bottom:16px;
+    left:50%;
+    transform:translateX(-50%);
+    display: flex;
+    align-items: center;
+    width: 260px;
+    height: 64px;
+    background: rgba(255,255,255,0.35);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-radius: 32px;
+    padding: 8px;
+    box-sizing: border-box;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.06);
+    z-index:99;
+    user-select: none;
+}
+
+.nav-slider {
+    position: absolute;
+    width: calc((260px - 16px)/3);
+    height: calc(64px - 16px);
+    border-radius: 24px;
+    left: 8px;
+    background: rgba(229,229,234,0.75);
+    transition: transform 0.3s cubic-bezier(0.34, 1.3, 0.64, 1);
+    z-index: 1;
+}
+
+.nav-item {
+    position: relative;
+    flex: 1;
+    height: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    z-index: 2;
+    transition: fill 0.3s ease;
+}
+/* 选中图标蓝色，未选中灰色 */
+.nav-item.active svg{
+    fill:#4299e1;
+}
+.nav-item svg{
+    fill:#666666;
+    width: 22px;
+    height: 22px;
+    transition: transform 0.2s ease, fill 0.3s ease;
+}
+.nav-item:active svg {
+    transform: scale(0.9);
+}
+</style>
+
+<script>
+const navItems = document.querySelectorAll('.nav-item');
+const slider = document.getElementById('slider');
+const STEP_SIZE = (260 - 16)/3;
+let currentIndex = 0;
+
+// 页面切换回调函数，你自己修改里面的页面逻辑
+function updatePage(index){
+    if(index <0) index=0;
+    if(index>2) index=2;
+    currentIndex = index;
+
+    navItems.forEach((item,i)=>{
+        if(i===index) item.classList.add('active');
+        else item.classList.remove('active');
+    })
+    slider.style.transform = `translateX(${index * STEP_SIZE}px)`;
+
+    // 在这里写你自己的页面显示隐藏代码
+    // 示例：
+    // document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'))
+    // if(index===0) 主页.classList.add('active')
+    // if(index===1) 下载页.classList.add('active')
+    // if(index===2) 账号页.classList.add('active')
+}
+
+navItems.forEach((item,idx)=>{
+    item.addEventListener('click',()=>{
+        updatePage(idx);
+    })
+})
+</script>
